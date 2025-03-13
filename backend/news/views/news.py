@@ -1,75 +1,71 @@
-from django.shortcuts import render
-from django.contrib.auth.models import User
-from django.contrib import messages
-from news.models import News
-from  django.core.paginator import Paginator
-from django.shortcuts import render, redirect, get_object_or_404
+from news.models import Information
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from news.serializers import InformationSerializer
+from rest_framework.response import Response
+from rest_framework import status
+from news.serializers import InformationSerializer
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 
-
-def redes_sociais(request):
-    return render(request, 'pages/redes_sociais.html')
-
+@api_view(['GET'])
 def list_news(request):
+    noticias = Information.objects.all().order_by('-date_news')  # Ordena pela data mais recente
+    serializer = InformationSerializer(noticias, many=True)
+    return Response(serializer.data)
 
-    news = News.objects.order_by('-date_news')
-    paginator = Paginator(news, 10)
-    page = request.GET.get('page')
-    news_per_page = paginator.get_page(page)
+@api_view(['GET'])
+def news_details(request, news_id):
+    try:
+        noticia = Information.objects.get(pk=news_id)
+        serializer = InformationSerializer(noticia)
+        return Response(serializer.data)
+    except Information.DoesNotExist:
+        return Response({"error": "Notícia não encontrada"}, status=status.HTTP_404_NOT_FOUND)
 
-    dados = {
-        'news': news_per_page
-    }
-    return render(request, 'pages/list_information.html', dados)
-
-def news(request, news_id):
-    news = get_object_or_404(News, pk=news_id)
-
-    show_news = {
-        'news': news
-    }
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_news(request):
+    print(request.POST)  # Mostra os dados recebidos no terminal
     
-    return render(request,'pages/information.html', show_news)
+    serializer = InformationSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    print(serializer.errors)  # Exibe os erros de validação caso existam
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-def publish_news(request):
-
-    if request.method == "POST":
-        author = request.POST["author"]
-        tittle_news = request.POST["tittle_news"]
-        subtittle_news = request.POST["subtittle_news"]
-        text_news = request.POST["text_news"]
-        image_news = request.FILES["image_news"]
-
-        news = News.objects.create(author=author, tittle_news=tittle_news,
-            subtittle_news=subtittle_news, text_news=text_news, image_news=image_news,)
-
-        news.save()
-
-        messages.success(request, "Nova notícia postada.")
-        return redirect("index")
+@api_view(['PUT', 'PATCH'])
+def update_news(request, id):
+    try:
+        news = Information.objects.get(id=id)
+    except Information.DoesNotExist:
+        return Response({"error": "Notícia não encontrada"}, status=status.HTTP_404_NOT_FOUND)
     
-    else:
-        return render(request, 'pages/publish_information.html')
+    serializer = InformationSerializer(news, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-#def delete_information(request, receita_id):
-#    receita = get_object_or_404(Information, pk=receita_id )
-#    receita.delete()
-#    return redirect('dashboard')
 
-#def edit_information(request, receita_id):
-#    receita = get_object_or_404(Information, pk=receita_id)
-#    receita_a_editar = { 'receita':receita }
-#    return render(request, 'pages/edit_information.html', receita_a_editar)
+@api_view(['DELETE'])
+def delete_news(request, id):
+    try:
+        news = Information.objects.get(id=id)
+        news.delete()
+        return Response({"message": "Notícia deletada com sucesso"}, status=status.HTTP_204_NO_CONTENT)
+    except Information.DoesNotExist:
+        return Response({"error": "Notícia não encontrada"}, status=status.HTTP_404_NOT_FOUND)
+    
+# Contagem de cliques em cada notícia
+def count_click(request, news_id):
+    noticia = get_object_or_404(Information, id=news_id)
+    noticia.click_count += 1
+    noticia.save()
+    return JsonResponse({"message": "Clique registrado", "clicks": noticia.click_count})
 
-#def update_information(request):
-#    if request.method == 'POST':
-#        receita_id = request.POST['receita_id']
-#        r = Information.objects.get(pk=receita_id)
-#        r.author = request.POST['author']
-#        r.tittle_information = request.POST['tittle_information']
-#        r.subtittle_information = request.POST['subtittle_information']
-#        r.text_information = request.POST['text_information']
-#        if 'image_information' in request.FILES:
-#            r.image_information = request.FILES['image_information']
-#        r.save()
-#        return redirect('dashboard')
+def noticias_mais_clicadas(request):
+    noticias = Information.objects.order_by("-click_count")[:10].values("id", "tittle_news", "click_count")
+    return JsonResponse(list(noticias), safe=False)

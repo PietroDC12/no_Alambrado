@@ -1,0 +1,127 @@
+<template>
+  <div class="container">
+    <h1>{{ noticia.tittle_news }}</h1>
+    <h3>{{ noticia.subtittle_news }}</h3>
+    <p class="author">Por: {{ noticia.author }} | {{ formatDate(noticia.date_news) }}</p>
+
+    <img v-if="noticia.image_news" :src="getImageUrl(noticia.image_news)" alt="Imagem da notícia" />
+
+    <p v-html="formattedText"></p>
+
+    <button @click="$router.push('/')">Voltar</button>
+    <button @click="excluirNoticia" class="btn btn-danger">Excluir</button>
+    <button class="btn btn-edit"><router-link :to="'/noticias/' + noticia.id + '/editar'">Editar</router-link></button>
+  </div>
+</template>
+
+<script>
+import { getNoticiaById, deleteNoticia } from '../services/api';
+
+export default {
+  data() {
+    return {
+      noticia: {},
+    };
+  },
+  async mounted() {
+    const id = this.$route.params.id; // Pegando o ID da URL
+    this.noticia = await getNoticiaById(id);
+  },
+  computed: {
+    formattedText() {
+      return this.noticia?.text_news ? this.noticia.text_news.replace(/\n/g, "<br>") : "";
+    },
+  },
+  methods: {
+    getImageUrl(imagePath) {
+      return `http://127.0.0.1:8000${imagePath}`;
+    },
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('pt-BR');
+    },
+    async excluirNoticia() {
+      if (confirm("Tem certeza que deseja excluir esta notícia?")) {
+        try {
+          await deleteNoticia(this.noticia.id);
+          alert("Notícia excluída com sucesso!");
+          this.$router.push("/");
+        } catch (error) {
+          console.error("Erro ao excluir notícia:", error);
+        }
+      }
+    },
+  },
+};
+</script>
+
+<style scoped>
+.container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 1px auto;
+  background: #fff;
+}
+
+h1 {
+  text-align: center;
+  font-size: 40px;
+  margin: 1px;
+}
+
+h3 {
+  text-align: center;
+  color: #555;
+}
+
+img {
+  max-width: 100%;
+  max-height: 300px;
+  width: auto;
+  height: auto;
+  display: block;
+  margin: 20px auto;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.author {
+  font-size: 0.9em;
+  color: gray;
+  margin-top: 10px;
+  text-align: center;
+}
+
+p {
+  font-size: 16px;
+  line-height: 1.6;
+  text-align: justify;
+  padding: 0 10px;
+}
+
+button {
+  display: block;
+  width: 150px;
+  margin: 20px auto;
+  background: rgb(24, 105, 13);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button:hover {
+  background: rgb(14, 70, 7);
+}
+
+.btn-danger {
+  background: red;
+  color: white;
+}
+
+.btn-edit {
+  background: yellow;
+  color: white;
+}
+</style>

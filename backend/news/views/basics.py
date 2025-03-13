@@ -2,10 +2,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from news.models import News
+from news.models import Information
 
 def index(request):
-    news = News.objects.order_by('-date_information').filter(id=5)
+    news = Information.objects.order_by('-date_news').filter(id=5)
 
     dados = {
         'news': news

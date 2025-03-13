@@ -1,20 +1,37 @@
 <template>
   <div class="app-container">
     <Navbar />
-
     <main class="content">
       <router-view />
     </main>
-
     <Footer />
   </div>
 </template>
 
 <script>
+import { provide, ref } from "vue";
 import Navbar from "./components/Navbar.vue";
 import Footer from "./components/Footer.vue";
 
 export default {
+  setup() {
+    const isAuthenticated = ref(!!localStorage.getItem("access_token"));
+
+    const login = (token) => {
+      localStorage.setItem("access_token", token);
+      isAuthenticated.value = true;
+    };
+
+    const logout = () => {
+      localStorage.removeItem("access_token");
+      isAuthenticated.value = false;
+    };
+
+    const authState = { isAuthenticated, login, logout };
+    provide("authState", authState);
+
+    return { authState };
+  },
   components: {
     Navbar,
     Footer,
@@ -39,3 +56,4 @@ export default {
   padding: 80px 20px 20px; /* Aumentei o padding-top para empurrar o conteúdo */
 }
 </style>
+
