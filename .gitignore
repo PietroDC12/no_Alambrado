@@ -1,0 +1,30 @@
+# 🔒 Segurança: Arquivos sensíveis
+.env
+*.pem
+config.json
+
+# ⚙️ Pastas do Python/Django
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+env/
+.mypy_cache/
+db.sqlite3
+
+# 📦 Dependências e Build
+node_modules/
+staticfiles/
+media/
+dist/
+*.log
+
+# ⚙️ Configurações específicas do IDE
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# 🔍 Arquivos do sistema
+Thumbs.db
