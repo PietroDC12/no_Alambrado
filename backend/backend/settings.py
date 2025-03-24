@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 from datetime import timedelta
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,12 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-bdhs2zsh9)&wt(3+4wu0+geo&s$#z=izkpdodis#1$i9$v+11t'
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config("DEBUG", default=False, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="").split(",")
 
 
 # Application definition
@@ -82,13 +83,13 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'portal-alambrado',
-        'USER': 'postgres',
-        'PASSWORD': '101010',
-        'HOST': 'localhost',
-        'PORT': '5433'
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": config("DB_NAME"),
+        "USER": config("DB_USER"),
+        "PASSWORD": config("DB_PASSWORD"),
+        "HOST": config("DB_HOST"),
+        "PORT": config("DB_PORT"),
     }
 }
 
@@ -129,14 +130,17 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",  # URL do frontend Vue.js
-]
+CORS_ALLOW_CREDENTIALS = True 
+
+CORS_ALLOWED_ORIGINS = config("CORS_ALLOWED_ORIGINS", default="http://localhost:5173").split(",")
+
 
 
 MEDIA_URL = '/media/'
@@ -159,5 +163,14 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=30),  # Token válido por 1 dia
-    "AUTH_HEADER_TYPES": ("Bearer",),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),  # Tempo de expiração do refresh token
+    "ROTATE_REFRESH_TOKENS": True,  # Gera um novo refresh token ao renovar o access token
+    "BLACKLIST_AFTER_ROTATION": True,  # Invalida refresh tokens antigos
+    "AUTH_COOKIE": "access_token",  # Nome do cookie para o access token
+    "AUTH_COOKIE_REFRESH": "refresh_token",  # Nome do cookie para o refresh token
+    "AUTH_COOKIE_DOMAIN": None,  # Define um domínio se necessário
+    "AUTH_COOKIE_SECURE": config("AUTH_COOKIE_SECURE", default=False, cast=bool),  # Apenas HTTPS (para produção, localmente deve ser False)
+    "AUTH_COOKIE_HTTP_ONLY": True,  # Impede acesso do JavaScript ao cookie
+    "AUTH_COOKIE_PATH": "/",  # Disponível em todo o site
+    "AUTH_COOKIE_SAMESITE": "Strict",  # Proteção CSRF
 }

@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import axios from "axios";  // ✅ Corrigido: Importação do Axios
 import { inject } from "vue";
 import { useRouter } from "vue-router";
 
@@ -24,9 +25,19 @@ export default {
     const authState = inject("authState");
     const router = useRouter();
 
-    const handleLogout = () => {
-      authState.logout();
-      router.push("/");
+    const handleLogout = async () => {
+      try {
+        await axios.post("http://127.0.0.1:8000/api/accounts/logout/", {}, { withCredentials: true });
+
+        // Remover tokens do localStorage ou cookies, se necessário
+        localStorage.removeItem("access_token");
+
+        authState.isAuthenticated.value = false; // ✅ Atualiza o estado de autenticação
+
+        router.push("/"); // ✅ Redireciona para a página inicial
+      } catch (error) {
+        console.error("Erro ao fazer logout", error);
+      }
     };
 
     return { authState, handleLogout };

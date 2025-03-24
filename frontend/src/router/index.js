@@ -14,7 +14,7 @@ const routes = [
   { path: "/sobre", component: Project, meta: { requiresAuth: false } },
   { path: "/noticias", component: News, meta: { requiresAuth: false } },
   { path: "/noticia/:id", component: NewsDetails, meta: { requiresAuth: false } },
-  { path: "/noticias/:id/editar", component: NewsEdit, meta: { requiresAuth: false } },
+  { path: "/noticias/:id/editar", component: NewsEdit, meta: { requiresAuth: true } },
   { path: "/login", component: Login, meta: { requiresAuth: false } },
   { path: "/criar/noticia", component: CreateNews, meta: { requiresAuth: true }, },
 ];
