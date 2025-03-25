@@ -27,7 +27,7 @@ export default {
     // Obtém o CSRF Token antes de enviar requisições protegidas
     const getCsrfToken = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/api/accounts/csrf/", {
+        const response = await axios.get("https://no-alambrado.onrender.com/api/accounts/csrf/", {
           withCredentials: true, // Garante que cookies são enviados
         });
         console.log("CSRF Token recebido:", response.data);
@@ -44,7 +44,7 @@ export default {
       error.value = "";
       try {
         const response = await axios.post(
-          "http://127.0.0.1:8000/api/accounts/login/",
+          "https://no-alambrado.onrender.com/api/accounts/login/",
           { email: email.value, password: password.value },
           { withCredentials: true } // Garante que os cookies HTTP-only sejam enviados
         );

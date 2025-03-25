@@ -27,7 +27,7 @@ export default {
 
     const handleLogout = async () => {
       try {
-        await axios.post("http://127.0.0.1:8000/api/accounts/logout/", {}, { withCredentials: true });
+        await axios.post("https://no-alambrado.onrender.com/api/accounts/logout/", {}, { withCredentials: true });
 
         // Remover tokens do localStorage ou cookies, se necessário
         localStorage.removeItem("access_token");

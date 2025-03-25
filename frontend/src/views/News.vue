@@ -32,11 +32,11 @@ export default {
             this.$router.push(`/noticia/${id}`);
         },
         getImageUrl(imagePath) {
-            return `http://127.0.0.1:8000${imagePath}`; // Ajuste conforme necessário
+            return `https://no-alambrado.onrender.com${imagePath}`; // Ajuste conforme necessário
         },
         async registrarClique(noticiaId) {
       try {
-        await axios.get(`http://127.0.0.1:8000/noticia/${noticiaId}/clique/`);
+        await axios.get(`https://no-alambrado.onrender.com/noticia/${noticiaId}/clique/`);
       } catch (error) {
         console.error("Erro ao registrar clique:", error);
       }

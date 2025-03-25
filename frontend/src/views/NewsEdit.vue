@@ -66,7 +66,7 @@ export default {
         getImageUrl(imagePath) {
             if (!imagePath) return null;
             if (imagePath.startsWith('http')) return imagePath;
-            return `http://127.0.0.1:8000${imagePath}`;
+            return `https://no-alambrado.onrender.com${imagePath}`;
         },
         handleImageUpload(event) {
             const file = event.target.files[0];

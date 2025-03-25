@@ -34,7 +34,7 @@ export default {
   },
   methods: {
     getImageUrl(imagePath) {
-      return `http://127.0.0.1:8000${imagePath}`;
+      return `https://no-alambrado.onrender.com${imagePath}`;
     },
     formatDate(dateString) {
       const date = new Date(dateString);
