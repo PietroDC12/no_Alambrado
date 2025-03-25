@@ -5,7 +5,7 @@ import App from './App.vue';
 import router from './router';
 
 axios.defaults.withCredentials = true;  // ✅ Permitir envio de cookies nas requisições
-axios.defaults.baseURL = "http://127.0.0.1:8000/api/";  // ✅ Definir a base da API
+axios.defaults.baseURL = "https://no-alambrado.onrender.com/api/";  // ✅ Definir a base da API
 
 // Obtendo o CSRF Token antes de qualquer requisição
 axios.get('accounts/csrf/')

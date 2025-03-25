@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen flex flex-col">
     <!-- Header corrigido (não fixo) -->
-    <header class="header">HEADER</header>
+    <!--<header class="header">HEADER</header>-->
 
     <!-- Seção de 3 colunas -->
     <section class="columns">

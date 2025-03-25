@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const API_URL = "http://127.0.0.1:8000";
+//const API_URL = "http://127.0.0.1:8000";
+
+const API_URL = "https://no-alambrado.onrender.com";
 
 // Busca todas as notícias
 export const getNoticias = async () => {
