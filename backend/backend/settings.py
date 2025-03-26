@@ -16,6 +16,10 @@ from datetime import timedelta
 from decouple import config
 import dj_database_url
 
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -157,8 +161,6 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
-        "rest_framework.authentication.SessionAuthentication",
-        "rest_framework.authentication.TokenAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.AllowAny",
@@ -178,3 +180,17 @@ SIMPLE_JWT = {
     "AUTH_COOKIE_PATH": "/",  # Disponível em todo o site
     "AUTH_COOKIE_SAMESITE": "Strict",  # Proteção CSRF
 }
+
+
+# Configuração do Cloudinary
+cloudinary.config(
+    cloud_name=config("CLOUDINARY_CLOUD_NAME"),
+    api_key=config("CLOUDINARY_API_KEY"),
+    api_secret=config("CLOUDINARY_API_SECRET"),
+)
+
+# Django armazena as imagens no Cloudinary
+DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+
+# URL base para acessar os arquivos no Cloudinary
+MEDIA_URL = "https://res.cloudinary.com/{}/".format(config("CLOUDINARY_CLOUD_NAME"))

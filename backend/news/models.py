@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import datetime
+import cloudinary.models
 
 # Create your models here.
 class Information(models.Model):
@@ -7,7 +8,8 @@ class Information(models.Model):
     tittle_news = models.CharField(max_length=200)
     subtittle_news = models.CharField(max_length=400)
     text_news = models.TextField()
-    image_news = models.ImageField(upload_to='images_news/', blank=True)
+    #image_news = models.ImageField(upload_to='images_news/', blank=True)
+    image_news = cloudinary.models.CloudinaryField('image', null=True, blank=True)
     date_news = models.DateTimeField(default=datetime.now, blank=True)
     click_count = models.IntegerField(default=0)
 
