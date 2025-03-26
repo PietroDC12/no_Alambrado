@@ -46,27 +46,19 @@ export default {
         const response = await axios.post(
           "https://no-alambrado.onrender.com/api/accounts/login/",
           { email: email.value, password: password.value },
-          { withCredentials: true } // Garante que os cookies HTTP-only sejam enviados
+          { withCredentials: true }
         );
 
-        if (response.status === 200) {
+        if (response.status === 200 && response.data.access_token) {
           console.log("Login bem-sucedido!");
-          console.log("CSRF Token recebido:", response.data.csrf_token);
-
-          // 🔹 Salvar tokens corretamente
-          localStorage.setItem("csrf_token", response.data.csrf_token);
           localStorage.setItem("access_token", response.data.access_token);
-          localStorage.setItem("refresh_token", response.data.refresh_token);
-
-          // 🔹 Atualizar estado global de autenticação
           authState.isAuthenticated = true;
-
           router.push("/");
         } else {
-          error.value = "Erro ao autenticar. Tente novamente.";
+          throw new Error("Credenciais inválidas.");
         }
       } catch (err) {
-        error.value = "Login falhou! Verifique suas credenciais.";
+        error.value = err.response?.data?.detail || "Erro ao autenticar.";
       }
     };
 
