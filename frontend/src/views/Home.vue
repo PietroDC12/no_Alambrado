@@ -54,6 +54,9 @@ import axios from "axios";
 import { getNoticias } from "../services/api";
 
 export default {
+  mounted() {
+    document.title = 'Página Inicial - Meu Site'
+  },
   data() {
     return {
       noticias: [],

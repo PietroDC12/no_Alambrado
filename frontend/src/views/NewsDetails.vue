@@ -9,8 +9,8 @@
     <p v-html="formattedText"></p>
 
     <button @click="$router.push('/')">Voltar</button>
-    <!--<button v-if="authState.isAuthenticated.value" @click="excluirNoticia" class="btn btn-danger">Excluir</button>
-    <button v-if="authState.isAuthenticated.value" class="btn btn-edit"><router-link :to="'/noticias/' + noticia.id + '/editar'">Editar</router-link></button>-->
+    <button v-if="authState.isAuthenticated.value" @click="excluirNoticia" class="btn btn-danger">Excluir</button>
+    <button v-if="authState.isAuthenticated.value" class="btn btn-edit"><router-link :to="'/noticias/' + noticia.id + '/editar'">Editar</router-link></button>
   </div>
 </template>
 
