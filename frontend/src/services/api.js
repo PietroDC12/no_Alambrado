@@ -71,8 +71,11 @@ export const loginUser = async (email, password) => {
     localStorage.setItem("access_token", access);
     localStorage.setItem("refresh_token", refresh);
 
-    authState.login(access); // Atualiza o estado global após login
+    // Atualiza o estado global após login
+    const appInstance = window.appInstance; // Acessa a instância do Vue registrada
+    appInstance.$authState.login(access); 
 
+    console.log("Login bem-sucedido!");
     return { access, refresh };
   } catch (error) {
     console.error("Erro ao fazer login:", error);

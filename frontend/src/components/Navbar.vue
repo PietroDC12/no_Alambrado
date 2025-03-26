@@ -27,7 +27,8 @@ export default {
       try {
         await axios.post("https://no-alambrado.onrender.com/api/accounts/logout/", {}, { withCredentials: true });
 
-        this.$authState.logout(); // Atualiza o estado global
+        // Atualiza o estado global após logout
+        this.$authState.logout(); 
         router.push("/"); // Redireciona para a página inicial
       } catch (error) {
         console.error("Erro ao fazer logout:", error);
@@ -37,6 +38,9 @@ export default {
     return { handleLogout };
   },
 };
+
+console.log("Estado Atual de Autenticação:", this.$authState.isAuthenticated);
+
 </script>
 
 <style scoped>

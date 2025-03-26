@@ -33,5 +33,6 @@ axios.get('accounts/csrf/')
 
 const app = createApp(App);
 app.config.globalProperties.$authState = authState; // Registrar o estado global
+window.appInstance = app; // Torna a instância acessível globalmente
 app.use(router);
 app.mount("#app");
