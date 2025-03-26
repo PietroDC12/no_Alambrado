@@ -8,35 +8,31 @@
     </div>
 
     <div class="auth-links">
-      <router-link v-if="!authState.isAuthenticated.value" to="/login">Login</router-link>
-      <router-link v-if="authState.isAuthenticated.value" to="/criar/noticia">Criar Notícia</router-link>
-      <button v-if="authState.isAuthenticated.value" @click="handleLogout">Sair</button>
+      <router-link v-if="!authState.isAuthenticated" to="/login">Login</router-link>
+      <router-link v-if="authState.isAuthenticated" to="/criar/noticia">Criar Notícia</router-link>
+      <button v-if="authState.isAuthenticated" @click="handleLogout">Sair</button>
     </div>
   </nav>
 </template>
 
 <script>
-import axios from "axios";  // ✅ Corrigido: Importação do Axios
 import { inject } from "vue";
 import { useRouter } from "vue-router";
 
 export default {
   setup() {
-    const authState = inject("authState");
+    const authState = inject("authState"); // Injeção do estado global
     const router = useRouter();
 
     const handleLogout = async () => {
       try {
         await axios.post("https://no-alambrado.onrender.com/api/accounts/logout/", {}, { withCredentials: true });
 
-        // Remover tokens do localStorage ou cookies, se necessário
-        localStorage.removeItem("access_token");
-
-        authState.isAuthenticated.value = false; // ✅ Atualiza o estado de autenticação
-
-        router.push("/"); // ✅ Redireciona para a página inicial
+        // Atualiza o estado após logout
+        authState.logout(); // Chama o método de logout no estado
+        router.push("/"); // Redireciona para a página inicial
       } catch (error) {
-        console.error("Erro ao fazer logout", error);
+        console.error("Erro ao fazer logout:", error);
       }
     };
 

@@ -65,14 +65,13 @@ export const deleteNoticia = async (id) => {
 // Login do usuário
 export const loginUser = async (email, password) => {
   try {
-    const response = await axios.post(`${API_URL}/api/token/`, {
-      email,
-      password,
-    });
-
+    const response = await axios.post(`${API_URL}/api/token/`, { email, password });
     const { access, refresh } = response.data;
+
     localStorage.setItem("access_token", access);
     localStorage.setItem("refresh_token", refresh);
+
+    authState.login(access); // Atualiza o estado global após login
 
     return { access, refresh };
   } catch (error) {

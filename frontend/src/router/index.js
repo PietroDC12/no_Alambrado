@@ -6,7 +6,8 @@ import NewsDetails from "../views/NewsDetails.vue"
 import Project from "../views/Project.vue"
 import CreateNews from "../views/CreateNews.vue"
 import NewsEdit from "../views/NewsEdit.vue";
-import Login from "../views/Login.vue"
+import Login from "../views/Login.vue";
+import authState from "@/auth.js";
 
 const routes = [
   { path: "/", component: Home, meta: { requiresAuth: false } },
@@ -25,10 +26,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = localStorage.getItem("token"); // Verifica se o usuário está logado
-
-  // 🚨 Bloqueia apenas as rotas protegidas!
-  if (to.meta.requiresAuth && !isAuthenticated) {
+  if (to.meta.requiresAuth && !authState.isAuthenticated) {
     alert("Você precisa estar logado para acessar esta página.");
     next("/login"); // Redireciona para login
   } else {
