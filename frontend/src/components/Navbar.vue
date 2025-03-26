@@ -8,29 +8,29 @@
     </div>
 
     <div class="auth-links">
-      <router-link v-if="!authState.isAuthenticated" to="/login">Login</router-link>
-      <router-link v-if="authState.isAuthenticated" to="/criar/noticia">Criar Notícia</router-link>
-      <button v-if="authState.isAuthenticated" @click="handleLogout">Sair</button>
+      <router-link v-if="!$authState.isAuthenticated" to="/login">Login</router-link>
+      <router-link v-if="$authState.isAuthenticated" to="/criar/noticia">Criar Notícia</router-link>
+      <button v-if="$authState.isAuthenticated" @click="handleLogout">Sair</button>
     </div>
   </nav>
 </template>
 
 <script>
+import axios from "axios";
 import { useRouter } from "vue-router";
 
 export default {
-  setup(_, { root }) {
+  setup() {
     const router = useRouter();
-    const authState = root.$authState; // Acesse o estado global
 
     const handleLogout = async () => {
       try {
         await axios.post("https://no-alambrado.onrender.com/api/accounts/logout/", {}, { withCredentials: true });
 
-        authState.logout(); // Atualiza o estado global
+        this.$authState.logout(); // Atualiza o estado global
         router.push("/"); // Redireciona para a página inicial
       } catch (error) {
-        console.error("Erro ao fazer logout", error);
+        console.error("Erro ao fazer logout:", error);
       }
     };
 
@@ -79,13 +79,5 @@ export default {
 .navbar a:hover,
 .auth-links button:hover {
   text-decoration: underline;
-}
-
-/* Evita que o conteúdo fique escondido atrás da Navbar */
-body {
-  padding-top: 50px;
-  margin: 0;
-  width: 100vw;
-  overflow-x: hidden;
 }
 </style>

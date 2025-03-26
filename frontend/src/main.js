@@ -1,14 +1,27 @@
 import { createApp } from 'vue';
-import axios from 'axios';  // ✅ Importação do Axios
+import axios from 'axios';
 import './style.css';
 import App from './App.vue';
 import router from './router';
-import { authState } from './auth'; // ✅ Importação do authState
 
-axios.defaults.withCredentials = true;  // ✅ Permitir envio de cookies nas requisições
-axios.defaults.baseURL = "https://no-alambrado.onrender.com/api/";  // ✅ Definir a base da API
+// Estado Global de Autenticação
+import { reactive } from "vue";
 
-// Obtendo o CSRF Token antes de qualquer requisição
+const authState = reactive({
+  isAuthenticated: !!localStorage.getItem("access_token"),
+  login(token) {
+    localStorage.setItem("access_token", token);
+    this.isAuthenticated = true;
+  },
+  logout() {
+    localStorage.removeItem("access_token");
+    this.isAuthenticated = false;
+  },
+});
+
+axios.defaults.withCredentials = true; 
+axios.defaults.baseURL = "https://no-alambrado.onrender.com/api/";
+
 axios.get('accounts/csrf/')
   .then(response => {
     console.log("CSRF Token obtido:", response.data.csrfToken);
@@ -19,6 +32,6 @@ axios.get('accounts/csrf/')
   });
 
 const app = createApp(App);
-app.config.globalProperties.$authState = authState; // ✅ Torna o authState acessível globalmente
+app.config.globalProperties.$authState = authState; // Registrar o estado global
 app.use(router);
 app.mount("#app");
