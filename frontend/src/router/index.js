@@ -7,7 +7,7 @@ import Project from "../views/Project.vue"
 import CreateNews from "../views/CreateNews.vue"
 import NewsEdit from "../views/NewsEdit.vue";
 import Login from "../views/Login.vue";
-import { authState } from "@/auth"; 
+import { authState } from "../auth"; 
 
 const routes = [
   { path: "/", component: Home, meta: { requiresAuth: false } },
