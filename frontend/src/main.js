@@ -10,12 +10,16 @@ import { reactive } from "vue";
 const authState = reactive({
   isAuthenticated: !!localStorage.getItem("access_token"),
   login(token) {
+    console.log("Método login chamado com token:", token);
     localStorage.setItem("access_token", token);
     this.isAuthenticated = true;
+    console.log("Estado após login: Autenticado =", this.isAuthenticated);
   },
   logout() {
+    console.log("Método logout chamado.");
     localStorage.removeItem("access_token");
     this.isAuthenticated = false;
+    console.log("Estado após logout: Autenticado =", this.isAuthenticated);
   },
 });
 

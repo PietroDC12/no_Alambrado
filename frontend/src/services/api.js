@@ -65,26 +65,30 @@ export const deleteNoticia = async (id) => {
 // Login do usuário
 export const loginUser = async (email, password) => {
   try {
-    console.log("Iniciando login com:", email, password); // Log das credenciais enviadas
+    console.log("Iniciando login com:", email, password);
 
     const response = await axios.post(`${API_URL}/api/token/`, { email, password });
-    console.log("Resposta do backend:", response.data); // Log da resposta do backend
+    console.log("Resposta do backend:", response.data);
 
     const { access, refresh } = response.data;
 
     // Salvar os tokens no localStorage
     localStorage.setItem("access_token", access);
     localStorage.setItem("refresh_token", refresh);
-    console.log("Tokens salvos:", { access, refresh }); // Log dos tokens salvos
+    console.log("Tokens salvos:", { access, refresh });
 
-    // Atualizar o estado global
-    const appInstance = window.appInstance; // Acessa a instância do Vue
-    appInstance.$authState.login(access);
-    console.log("Login bem-sucedido! Estado atualizado."); // Log de sucesso
+    // Atualizar o estado global de autenticação
+    const appInstance = window.appInstance; // Certifique-se de que a instância Vue está acessível globalmente
+    if (appInstance && appInstance.$authState) {
+      appInstance.$authState.login(access);
+      console.log("Estado atualizado após login: Autenticado!", appInstance.$authState.isAuthenticated);
+    } else {
+      console.error("Instância do Vue ou authState não disponível!");
+    }
 
     return { access, refresh };
   } catch (error) {
-    console.error("Erro no login:", error.response ? error.response.data : error); // Log detalhado do erro
+    console.error("Erro no login:", error.response ? error.response.data : error);
     throw error;
   }
 };
