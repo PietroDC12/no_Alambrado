@@ -52,7 +52,15 @@ export default {
         if (response.status === 200) {
           console.log("Login bem-sucedido!");
           console.log("CSRF Token recebido:", response.data.csrf_token);
+
+          // 🔹 Salvar tokens corretamente
           localStorage.setItem("csrf_token", response.data.csrf_token);
+          localStorage.setItem("access_token", response.data.access_token);
+          localStorage.setItem("refresh_token", response.data.refresh_token);
+
+          // 🔹 Atualizar estado global de autenticação
+          authState.isAuthenticated = true;
+
           router.push("/");
         } else {
           error.value = "Erro ao autenticar. Tente novamente.";
