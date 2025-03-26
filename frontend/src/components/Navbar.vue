@@ -21,12 +21,19 @@ import { useRouter } from "vue-router";
 
 export default {
   setup() {
+    console.log("Estado atual no Navbar:", this.$authState.isAuthenticated); // Verifica o estado inicial
+
     const router = useRouter();
 
-    const handleLogout = async function () {
+    const handleLogout = async () => {
       try {
+        console.log("Iniciando logout..."); // Log antes de iniciar o logout
+
         await axios.post("https://no-alambrado.onrender.com/api/accounts/logout/", {}, { withCredentials: true });
-        this.$authState.logout(); // Atualiza o estado global
+
+        this.$authState.logout();
+        console.log("Logout realizado com sucesso!"); // Log de sucesso
+
         router.push("/"); // Redireciona para a página inicial
       } catch (error) {
         console.error("Erro ao fazer logout:", error);

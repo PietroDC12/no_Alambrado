@@ -27,11 +27,14 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const isAuthenticated = router.app?.config.globalProperties?.$authState?.isAuthenticated || false;
 
+  console.log("Rota acessada:", to.path, " | Autenticado:", isAuthenticated); // Log da rota e do estado
+
   if (to.meta.requiresAuth && !isAuthenticated) {
-    alert("Você precisa estar logado para acessar esta página.");
-    next("/login"); // Redireciona para login
+    console.warn("Acesso negado. Redirecionando para login."); // Log de rota protegida sem autenticação
+    next("/login");
   } else {
-    next(); // Permite o acesso às páginas públicas
+    console.log("Acesso permitido à rota:", to.path); // Log de acesso permitido
+    next();
   }
 });
 
