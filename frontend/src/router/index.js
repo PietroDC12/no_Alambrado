@@ -26,11 +26,13 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.meta.requiresAuth && !authState.isAuthenticated) {
+  const isAuthenticated = !!localStorage.getItem("access_token"); // Verifica autenticação correta
+
+  if (to.meta.requiresAuth && !isAuthenticated) {
     alert("Você precisa estar logado para acessar esta página.");
-    next("/login"); // Redireciona para login
+    next("/login");
   } else {
-    next(); // Permite o acesso às páginas públicas
+    next();
   }
 });
 
