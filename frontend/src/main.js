@@ -3,6 +3,7 @@ import axios from 'axios';  // ✅ Importação do Axios
 import './style.css';
 import App from './App.vue';
 import router from './router';
+import { authState } from './auth'; // ✅ Importação do authState
 
 axios.defaults.withCredentials = true;  // ✅ Permitir envio de cookies nas requisições
 axios.defaults.baseURL = "https://no-alambrado.onrender.com/api/";  // ✅ Definir a base da API
@@ -18,5 +19,6 @@ axios.get('accounts/csrf/')
   });
 
 const app = createApp(App);
+app.config.globalProperties.$authState = authState; // ✅ Torna o authState acessível globalmente
 app.use(router);
 app.mount("#app");

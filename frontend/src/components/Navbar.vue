@@ -16,27 +16,25 @@
 </template>
 
 <script>
-import { inject } from "vue";
+import axios from "axios"; // ✅ Importação do Axios
 import { useRouter } from "vue-router";
 
 export default {
   setup() {
-    const authState = inject("authState"); // Injeção do estado global
     const router = useRouter();
 
     const handleLogout = async () => {
       try {
         await axios.post("https://no-alambrado.onrender.com/api/accounts/logout/", {}, { withCredentials: true });
 
-        // Atualiza o estado após logout
-        authState.logout(); // Chama o método de logout no estado
+        this.$authState.logout(); // ✅ Atualiza o estado global após logout
         router.push("/"); // Redireciona para a página inicial
       } catch (error) {
         console.error("Erro ao fazer logout:", error);
       }
     };
 
-    return { authState, handleLogout };
+    return { handleLogout };
   },
 };
 </script>
