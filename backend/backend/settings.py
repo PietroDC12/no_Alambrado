@@ -87,6 +87,16 @@ DATABASES = {
     'default': dj_database_url.config(default=config('DATABASE_URL'))
 }
 
+#DATABASES = {
+#    "default": {
+#        "ENGINE": "django.db.backends.postgresql_psycopg2",
+#        "NAME": config("DB_NAME"),
+#        "USER": config("DB_USER"),
+#        "PASSWORD": config("DB_PASSWORD"),
+#        "HOST": config("DB_HOST"),
+#        "PORT": config("DB_PORT"),
+#    }
+#}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -163,7 +173,7 @@ SIMPLE_JWT = {
     "AUTH_COOKIE": "access_token",  # Nome do cookie para o access token
     "AUTH_COOKIE_REFRESH": "refresh_token",  # Nome do cookie para o refresh token
     "AUTH_COOKIE_DOMAIN": None,  # Define um domínio se necessário
-    "AUTH_COOKIE_SECURE": config("AUTH_COOKIE_SECURE", default=False, cast=bool),  # Apenas HTTPS (para produção, localmente deve ser False)
+    "AUTH_COOKIE_SECURE": config("AUTH_COOKIE_SECURE", default=True, cast=bool),  # Apenas HTTPS (para produção, localmente deve ser False)
     "AUTH_COOKIE_HTTP_ONLY": True,  # Impede acesso do JavaScript ao cookie
     "AUTH_COOKIE_PATH": "/",  # Disponível em todo o site
     "AUTH_COOKIE_SAMESITE": "Strict",  # Proteção CSRF

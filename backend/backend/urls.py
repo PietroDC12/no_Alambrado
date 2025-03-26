@@ -25,7 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('news.urls')),
     path("api/accounts/", include("accounts.urls")),
-    path("api/token/", login, name="token_obtain_pair"),  # LOGIN via email (Gerar Token)
+    path("api/token/", CustomTokenObtainPairView.as_view(), name="token_obtain_pair"),  # LOGIN via email (Gerar Token)
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),  # Atualizar Token
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

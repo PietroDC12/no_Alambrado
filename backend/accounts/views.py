@@ -33,14 +33,18 @@ def login(request):
     
     if user:
         refresh = RefreshToken.for_user(user)
-        response = Response({"message": "Login realizado com sucesso!"})
+        response = Response({
+            "message": "Login realizado com sucesso!",
+            "access_token": str(refresh.access_token),
+            "refresh_token": str(refresh)
+        })
 
-        # Definir o token de acesso como um cookie seguro
+        # Definir os cookies de forma mais segura (em produção use secure=True)
         response.set_cookie(
             key="access_token",
             value=str(refresh.access_token),
-            httponly=True,  # Impede que JavaScript acesse o cookie
-            secure=False,  # Mude para True em produção (HTTPS obrigatório)
+            httponly=True,
+            secure=settings.DEBUG is False,
             samesite="Lax",
         )
 
@@ -48,7 +52,7 @@ def login(request):
             key="refresh_token",
             value=str(refresh),
             httponly=True,
-            secure=False, 
+            secure=settings.DEBUG is False,
             samesite="Lax",
         )
 
@@ -57,7 +61,7 @@ def login(request):
 
         return response
 
-    return Response({"error": "Credenciais inválidas"}, status=401)
+    return Response({"error": "Credenciais inválidas"}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 @api_view(["POST"])
