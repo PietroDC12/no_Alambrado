@@ -18,6 +18,7 @@
 <script>
 import axios from "axios";
 import { useRouter } from "vue-router";
+import { authState } from "@/auth"; // Importa o estado global corretamente
 
 export default {
   setup() {
@@ -28,15 +29,10 @@ export default {
         console.log("Logout iniciado...");
         await axios.post("https://no-alambrado.onrender.com/api/accounts/logout/", {}, { withCredentials: true });
 
-        // Validar acesso ao estado global antes de chamar logout
-        if (this.$authState) {
-          this.$authState.logout();
-          console.log("Logout realizado com sucesso. Estado atualizado: isAuthenticated =", this.$authState.isAuthenticated);
-        } else {
-          console.error("Falha ao acessar o estado global $authState!");
-        }
+        authState.logout(); // Chama logout corretamente
+        console.log("Logout realizado com sucesso. Estado atualizado: isAuthenticated =", authState.isAuthenticated);
 
-        router.push("/"); // Redireciona para a página inicial
+        router.push("/"); // Redireciona para a home
       } catch (error) {
         console.error("Erro ao realizar logout:", error);
       }

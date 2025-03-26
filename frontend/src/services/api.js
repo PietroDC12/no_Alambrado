@@ -29,11 +29,21 @@ export const getNoticiaById = async (id) => {
 // Cria uma nova notícia, adicionando no banco de dados
 export const postNoticia = async (formData) => {
   try {
+    const token = localStorage.getItem("access_token");
+
+    if (!token) {
+      console.error("Nenhum token encontrado! Usuário não autenticado.");
+      throw new Error("Usuário não autenticado.");
+    }
+
     const response = await axios.post(`${API_URL}/noticias/criar/`, formData, {
       headers: {
+        Authorization: `Bearer ${token}`, // Envia o token no cabeçalho
         "Content-Type": "multipart/form-data",
       },
+      withCredentials: true,
     });
+
     return response.data;
   } catch (error) {
     console.error("Erro ao enviar notícia:", error);

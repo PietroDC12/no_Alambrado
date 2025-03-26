@@ -6,18 +6,20 @@ import router from './router';
 import { reactive } from "vue";
 
 // Estado Global de Autenticação
-const authState = reactive({
-  isAuthenticated: !!localStorage.getItem("access_token"), // Verifica se há um token ao carregar
+export const authState = reactive({
+  isAuthenticated: !!localStorage.getItem("access_token"),
   login(token) {
     console.log("Método login chamado com token:", token);
-    localStorage.setItem("access_token", token); // Salva o token no localStorage
-    this.isAuthenticated = true; // Atualiza o estado de autenticação
+    localStorage.setItem("access_token", token);
+    this.isAuthenticated = true;
     console.log("Estado após login: isAuthenticated =", this.isAuthenticated);
   },
   logout() {
     console.log("Método logout chamado.");
-    localStorage.removeItem("access_token"); // Remove o token do localStorage
-    this.isAuthenticated = false; // Atualiza o estado de autenticação
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    localStorage.removeItem("csrf_token");
+    this.isAuthenticated = false;
     console.log("Estado após logout: isAuthenticated =", this.isAuthenticated);
   },
 });
