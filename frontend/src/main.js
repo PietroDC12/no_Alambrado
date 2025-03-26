@@ -39,7 +39,14 @@ axios.get('accounts/csrf/')
 // Criação da aplicação Vue
 const app = createApp(App);
 app.config.globalProperties.$authState = authState; // Registra o authState globalmente
-console.log("AuthState registrado globalmente:", app.config.globalProperties.$authState);
-window.appInstance = app; // Torna a instância acessível globalmente para outros usos
+
+// Validar e garantir registro global
+if (!app.config.globalProperties.$authState) {
+  console.error("Falha ao registrar o authState globalmente!");
+} else {
+  console.log("AuthState registrado globalmente:", app.config.globalProperties.$authState);
+}
+
+window.appInstance = app; // Torna a instância Vue acessível globalmente
 app.use(router); // Configura o roteador
-app.mount("#app"); // Monta a aplicação na DOM
+app.mount("#app"); // Monta o app na DOM

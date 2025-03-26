@@ -25,15 +25,15 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = router.app?.config.globalProperties?.$authState?.isAuthenticated || false;
+  const isAuthenticated = window.appInstance?.config.globalProperties?.$authState?.isAuthenticated || false;
 
-  console.log("Rota acessada:", to.path, " | Autenticado:", isAuthenticated); // Log da rota e do estado
+  console.log("Rota acessada:", to.path, "| Estado autenticado:", isAuthenticated);
 
   if (to.meta.requiresAuth && !isAuthenticated) {
-    console.warn("Acesso negado. Redirecionando para login."); // Log de rota protegida sem autenticação
+    console.warn("Acesso negado à rota protegida:", to.path);
     next("/login");
   } else {
-    console.log("Acesso permitido à rota:", to.path); // Log de acesso permitido
+    console.log("Acesso permitido à rota:", to.path);
     next();
   }
 });
