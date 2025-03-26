@@ -9,14 +9,14 @@ import NewsEdit from "../views/NewsEdit.vue";
 import Login from "../views/Login.vue";
 
 const routes = [
-  { path: "/", component: Home, meta: { requiresAuth: false } },
-  { path: "/contato", component: Contact, meta: { requiresAuth: false } },
-  { path: "/sobre", component: Project, meta: { requiresAuth: false } },
-  { path: "/noticias", component: News, meta: { requiresAuth: false } },
-  { path: "/noticia/:id", component: NewsDetails, meta: { requiresAuth: false } },
-  { path: "/noticias/:id/editar", component: NewsEdit, meta: { requiresAuth: true } },
-  { path: "/login", component: Login, meta: { requiresAuth: false } },
-  { path: "/criar/noticia", component: CreateNews, meta: { requiresAuth: true }, },
+  { path: "/", component: Home, meta: { requiresAuth: false, title: 'Home' } },
+  { path: "/contato", component: Contact, meta: { requiresAuth: false, title: 'Contato'  } },
+  { path: "/sobre", component: Project, meta: { requiresAuth: false, title: 'Sobre o Projeto'  } },
+  { path: "/noticias", component: News, meta: { requiresAuth: false, title: 'Notícias'  } },
+  { path: "/noticia/:id", component: NewsDetails, meta: { requiresAuth: false, title: '...'  } },
+  { path: "/noticias/:id/editar", component: NewsEdit, meta: { requiresAuth: true, title: 'Edição'  } },
+  { path: "/login", component: Login, meta: { requiresAuth: false, title: 'Login'  } },
+  { path: "/criar/noticia", component: CreateNews, meta: { requiresAuth: true, title: 'Nova notícia'  }, },
 ];
 
 const router = createRouter({
