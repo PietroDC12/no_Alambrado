@@ -32,15 +32,22 @@ export default {
             this.$router.push(`/noticia/${id}`);
         },
         getImageUrl(imagePath) {
-            return `https://no-alambrado.onrender.com${imagePath}`; // Ajuste conforme necessário
+            if (!imagePath) return "/placeholder.jpg"; // Caso não tenha imagem, usa um placeholder
+
+            // Corrige URLs relativas, garantindo o domínio correto
+            if (!imagePath.startsWith("http")) {
+                return `https://no-alambrado.onrender.com${imagePath}`;
+            }
+
+            return imagePath;
         },
         async registrarClique(noticiaId) {
-      try {
-        await axios.get(`https://no-alambrado.onrender.com/noticia/${noticiaId}/clique/`);
-      } catch (error) {
-        console.error("Erro ao registrar clique:", error);
-      }
-    },
+            try {
+                await axios.get(`https://no-alambrado.onrender.com/noticia/${noticiaId}/clique/`);
+            } catch (error) {
+                console.error("Erro ao registrar clique:", error);
+            }
+        },
     },
 };
 </script>

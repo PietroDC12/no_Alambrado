@@ -8,9 +8,9 @@
     </div>
 
     <div class="auth-links">
-      <router-link v-if="!$authState.isAuthenticated" to="/login">Login</router-link>
-      <router-link v-if="$authState.isAuthenticated" to="/criar/noticia">Criar Notícia</router-link>
-      <button v-if="$authState.isAuthenticated" @click="handleLogout">Sair</button>
+      <router-link v-if="isAuthenticated" to="/criar/noticia">Criar Notícia</router-link>
+      <button v-if="isAuthenticated" @click="handleLogout">Sair</button>
+      <router-link v-else to="/login">Login</router-link>
     </div>
   </nav>
 </template>
@@ -18,11 +18,13 @@
 <script>
 import axios from "axios";
 import { useRouter } from "vue-router";
+import { computed, watchEffect } from "vue";
 import { authState } from "../auth"; // Importa o estado global corretamente
 
 export default {
   setup() {
     const router = useRouter();
+    const isAuthenticated = computed(() => authState.isAuthenticated); // Computed para garantir reatividade
 
     const handleLogout = async () => {
       try {
@@ -38,7 +40,12 @@ export default {
       }
     };
 
-    return { handleLogout };
+    // Atualiza a navbar quando o authState mudar
+    watchEffect(() => {
+      console.log("Autenticação mudou:", authState.isAuthenticated);
+    });
+
+    return { handleLogout, isAuthenticated };
   },
 };
 </script>
