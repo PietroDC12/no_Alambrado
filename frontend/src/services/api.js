@@ -41,12 +41,11 @@ export const postNoticia = async (formData) => {
         Authorization: `Bearer ${token}`, // Envia o token no cabeçalho
         "Content-Type": "multipart/form-data",
       },
-      withCredentials: true,
     });
 
     return response.data;
   } catch (error) {
-    console.error("Erro ao enviar notícia:", error);
+    console.error("Erro ao enviar notícia:", error.response ? error.response.data : error);
     throw error;
   }
 };

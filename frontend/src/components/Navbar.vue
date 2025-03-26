@@ -18,7 +18,7 @@
 <script>
 import axios from "axios";
 import { useRouter } from "vue-router";
-import { authState } from "@/auth"; // Importa o estado global corretamente
+import { authState } from "../auth"; // Importa o estado global corretamente
 
 export default {
   setup() {
