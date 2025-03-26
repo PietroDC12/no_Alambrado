@@ -3,11 +3,14 @@ from django.contrib.auth import get_user_model, authenticate
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework import status
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework import status, serializers
 from django.conf import settings
 from django.middleware.csrf import get_token
+from .serializers import CustomTokenObtainPairSerializer
 
 
+# Registro de novo usuário
 @api_view(["POST"])
 def register(request):
     """Registro de novo usuário"""
@@ -21,6 +24,7 @@ def register(request):
     return Response({"message": "Usuário criado com sucesso!"}, status=status.HTTP_201_CREATED)
 
 
+# Autenticação e armazenamento de JWT em cookies HTTP-only
 User = get_user_model()
 
 @api_view(["POST"])
@@ -64,6 +68,7 @@ def login(request):
     return Response({"error": "Credenciais inválidas"}, status=status.HTTP_401_UNAUTHORIZED)
 
 
+# Logout do usuário
 @api_view(["POST"])
 def logout(request):
     """Remove os cookies de autenticação"""
@@ -73,7 +78,13 @@ def logout(request):
     return response
 
 
+# Retorna o CSRF Token para o frontend
 @api_view(["GET"])
 def csrf_token(request):
     """Retorna o CSRF Token para o frontend"""
     return Response({"csrfToken": get_token(request)})
+
+
+# Autenticação personalizada com CustomTokenObtainPairSerializer
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
