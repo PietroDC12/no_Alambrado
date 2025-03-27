@@ -23,7 +23,7 @@ from accounts.views import CustomTokenObtainPairView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('news.urls')),
+    path('api/', include('news.urls')),
     path("api/accounts/", include("accounts.urls")),
     path("api/token/", CustomTokenObtainPairView.as_view(), name="token_obtain_pair"),  # LOGIN via email (Gerar Token)
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),  # Atualizar Token
