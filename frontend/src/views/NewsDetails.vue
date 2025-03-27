@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div v-if="noticia && noticia.id" class="container">
     <h1>{{ noticia.tittle_news }}</h1>
     <h3>{{ noticia.subtittle_news }}</h3>
     <p class="author">Por: {{ noticia.author }} | {{ formatDate(noticia.date_news) }}</p>
@@ -9,14 +9,22 @@
     <p v-html="formattedText"></p>
 
     <button @click="$router.push('/')">Voltar</button>
-    <button v-if="authState.isAuthenticated.value" @click="excluirNoticia" class="btn btn-danger">Excluir</button>
-    <button v-if="authState.isAuthenticated.value" class="btn btn-edit"><router-link
-        :to="'/noticias/' + noticia.id + '/editar'">Editar</router-link></button>
+
+    <!-- Os botões só aparecem se `authState` existir e o usuário estiver autenticado -->
+    <button v-if="authState?.isAuthenticated?.value" @click="excluirNoticia" class="btn btn-danger">Excluir</button>
+    <button v-if="authState?.isAuthenticated?.value" class="btn btn-edit">
+      <router-link :to="'/noticias/' + noticia.id + '/editar'">Editar</router-link>
+    </button>
+  </div>
+
+  <div v-else>
+    <p>Carregando notícia...</p>
   </div>
 </template>
 
 <script>
 import { getNoticiaById, deleteNoticia } from '../services/api';
+import { inject } from "vue"; // Importa `inject` para buscar o authState, se disponível
 
 export default {
   data() {
@@ -25,7 +33,7 @@ export default {
     };
   },
   async mounted() {
-    const id = this.$route.params.id; // Pegando o ID da URL
+    const id = this.$route.params.id;
     this.noticia = await getNoticiaById(id);
   },
   computed: {
@@ -33,15 +41,13 @@ export default {
       return this.noticia?.text_news ? this.noticia.text_news.replace(/\n/g, "<br>") : "";
     },
   },
+  setup() {
+    const authState = inject("authState", null); // Se não existir, retorna `null`, evitando erro
+    return { authState };
+  },
   methods: {
-    getImageUrl(noticia) {
-      console.log("Imagem recebida:", noticia.image_url); // Adiciona log para depuração
-
-      if (!noticia.image_url) return "/placeholder.jpg"; // Se estiver vazio, mostra placeholder
-
-      return noticia.image_url; // Retorna a URL da imagem
-    },
     formatDate(dateString) {
+      if (!dateString) return "Data não disponível";
       const date = new Date(dateString);
       return date.toLocaleDateString('pt-BR');
     },
