@@ -3,7 +3,7 @@
         <h1>Últimas Notícias</h1>
         <div class="grid">
             <div v-for="noticia in noticias" :key="noticia.id" class="card">
-                <img v-if="noticia.image_news" :src="getImageUrl(noticia.image_news)" alt="Imagem da notícia" />
+                <img v-if="noticia.image_url" :src="getImageUrl(noticia.image_url)" alt="Imagem da notícia" />
                 <div class="content">
                     <h3>{{ noticia.tittle_news }}</h3>
                     <!--<p>{{ noticia.text_news.slice(0, 100) }}...</p>-->
@@ -34,10 +34,10 @@ export default {
         verDetalhes(id) {
             this.$router.push(`/noticia/${id}`);
         },
-        getImageUrl(imagePath) {
-            if (!imagePath) return "/placeholder.jpg"; // Caso não tenha imagem, usa um placeholder
+        getImageUrl(noticia) {
+            if (!noticia.image_url) return "/placeholder.jpg"; // Caso não tenha imagem, usa um placeholder
 
-            return imagePath;
+            return noticia.image_url;
         },
         async registrarClique(noticiaId) {
             try {

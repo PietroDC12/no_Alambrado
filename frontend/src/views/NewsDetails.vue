@@ -4,7 +4,7 @@
     <h3>{{ noticia.subtittle_news }}</h3>
     <p class="author">Por: {{ noticia.author }} | {{ formatDate(noticia.date_news) }}</p>
 
-    <img v-if="noticia.image_news" :src="getImageUrl(noticia.image_news)" alt="Imagem da notícia" />
+    <img v-if="noticia.image_url" :src="getImageUrl(noticia.image_url)" alt="Imagem da notícia" />
 
     <p v-html="formattedText"></p>
 
@@ -33,9 +33,11 @@ export default {
     },
   },
   methods: {
-    getImageUrl(imagePath) {
-      return `https://no-alambrado.onrender.com${imagePath}`;
-    },
+    getImageUrl(noticia) {
+            if (!noticia.image_url) return "/placeholder.jpg"; // Caso não tenha imagem, usa um placeholder
+
+            return noticia.image_url;
+        },
     formatDate(dateString) {
       const date = new Date(dateString);
       return date.toLocaleDateString('pt-BR');

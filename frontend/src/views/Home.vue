@@ -10,7 +10,7 @@
 
         <div v-if="noticias.length">
           <div v-for="noticia in ultimasNoticias" :key="noticia.id" class="noticia-card">
-            <img v-if="noticia.image_news" :src="getImageUrl(noticia.image_news)" alt="Imagem da notícia" />
+            <img v-if="noticia.image_url" :src="getImageUrl(noticia.image_url)" alt="Imagem da notícia" />
             <h2>{{ noticia.tittle_news }}</h2>
             <!--<p>{{ noticia.subtittle_news }}</p>
             <p class="date">{{ formatarData(noticia.date_news) }}</p>-->
@@ -83,9 +83,11 @@ export default {
       const dataObj = new Date(data);
       return dataObj.toLocaleDateString("pt-BR");
     },
-    getImageUrl(imagePath) {
-      return `https://no-alambrado.onrender.com${imagePath}`; // Ajuste conforme necessário
-    },
+    getImageUrl(noticia) {
+            if (!noticia.image_url) return "/placeholder.jpg"; // Caso não tenha imagem, usa um placeholder
+
+            return noticia.image_url;
+        },
     async registrarClique(noticiaId) {
       try {
         await axios.get(`https://no-alambrado.onrender.com/noticia/${noticiaId}/clique/`);
