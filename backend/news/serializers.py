@@ -9,7 +9,6 @@ class InformationSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_image_url(self, obj):
-        request = self.context.get('request')  # Obtém a request para gerar URL absoluta
-        if obj.image and request:  # Substitua `image` pelo nome correto do campo
-            return request.build_absolute_uri(obj.image.url)
+        if obj.image_news:
+            return obj.image_news.url  # Retorna a URL da imagem hospedada no Cloudinary
         return None

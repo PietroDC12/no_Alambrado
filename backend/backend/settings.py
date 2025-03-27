@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     'news',
     'accounts',
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
 MIDDLEWARE = [
