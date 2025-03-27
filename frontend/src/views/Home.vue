@@ -55,7 +55,7 @@ import { getNoticias } from "../services/api";
 
 export default {
   mounted() {
-    document.title = 'Página Inicial - Meu Site'
+    document.title = 'Página Inicial'
   },
   data() {
     return {

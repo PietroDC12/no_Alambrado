@@ -41,6 +41,9 @@
 import { getNoticiaById, updateNoticia } from "../services/api";
 
 export default {
+    mounted() {
+    document.title = 'Edição de notícia'
+  },
     data() {
         return {
             news: {

@@ -27,6 +27,9 @@
   import { postNoticia } from "../services/api";
   
   export default {
+    mounted() {
+    document.title = 'Criar notícia'
+  },
     data() {
       return {
         news: {

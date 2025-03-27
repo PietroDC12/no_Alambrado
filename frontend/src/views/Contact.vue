@@ -18,9 +18,9 @@
     <!-- Retângulo grande -->
     <div class="large-box">
       <h3>Contato</h3>
-      <p class="text-large-box"><font-awesome-icon :icon="['fas', 'envelope']" /> email@email.com</p>
-      <p class="text-large-box"><font-awesome-icon :icon="['fab', 'linkedin']" /> LinkedIn:</p>
-      <p class="text-large-box"><font-awesome-icon :icon="['fab', 'github']" /> Github:</p>
+      <p class="text-large-box"><font-awesome-icon :icon="['fas', 'envelope']" /> pidellacorte@hotmail.com</p>
+      <p class="text-large-box"><font-awesome-icon :icon="['fab', 'linkedin']" /> <a href="https://www.linkedin.com/in/pietro-antonio-della-corte-silva/">LinkedIn</a></p>
+      <p class="text-large-box"><font-awesome-icon :icon="['fab', 'github']" /> <a href="https://github.com/PietroDC12">Github</a></p>
     </div>
   </div>
 </template>
@@ -32,6 +32,12 @@ import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 library.add(faEnvelope, faLink, faCode, faGithub, faLinkedin)
+
+export default{
+        mounted() {
+    document.title = 'Contato'
+  },
+    }
 </script>
 
 <style scoped>

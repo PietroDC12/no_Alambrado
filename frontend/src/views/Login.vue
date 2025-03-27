@@ -16,6 +16,9 @@ import { ref, inject, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
 export default {
+  mounted() {
+    document.title = 'Login'
+  },
   setup() {
     const authState = inject("authState");
     const email = ref("");

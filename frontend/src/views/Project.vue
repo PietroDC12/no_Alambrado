@@ -12,6 +12,15 @@
     
 </template>
 
+<script>
+    export default{
+        mounted() {
+    document.title = 'Conheça o projeto'
+  },
+    }
+</script>
+
+
 <style>
 .container{
     margin-left: 130px;
