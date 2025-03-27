@@ -33,11 +33,6 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 library.add(faEnvelope, faLink, faCode, faGithub, faLinkedin)
 
-export default{
-        mounted() {
-    document.title = 'Contato'
-  },
-    }
 </script>
 
 <style scoped>
