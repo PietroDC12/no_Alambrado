@@ -42,9 +42,11 @@ export default {
     },
   },
   setup() {
-    const authState = inject("authState", null); // Se não existir, retorna `null`, evitando erro
-    return { authState };
-  },
+  const authState = inject("authState", null);
+  console.log("authState:", authState); // Verifica se está sendo injetado corretamente
+  console.log("authState.isAuthenticated:", authState?.isAuthenticated?.value); // Verifica o estado da autenticação
+  return { authState };
+},
   methods: {
     formatDate(dateString) {
       if (!dateString) return "Data não disponível";
