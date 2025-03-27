@@ -3,7 +3,7 @@
         <h1>Últimas Notícias</h1>
         <div class="grid">
             <div v-for="noticia in noticias" :key="noticia.id" class="card">
-                <img v-if="noticia.image_news" :src="noticia.image_news" alt="Imagem da notícia" />
+                <img v-if="noticia.image_news" :src="getImageUrl(noticia.image_news)" alt="Imagem da notícia" />
                 <div class="content">
                     <h3>{{ noticia.tittle_news }}</h3>
                     <!--<p>{{ noticia.text_news.slice(0, 100) }}...</p>-->
@@ -36,11 +36,6 @@ export default {
         },
         getImageUrl(imagePath) {
             if (!imagePath) return "/placeholder.jpg"; // Caso não tenha imagem, usa um placeholder
-
-            // Corrige URLs relativas, garantindo o domínio correto
-            if (!imagePath.startsWith("http")) {
-                return `https://no-alambrado.onrender.com${imagePath}`;
-            }
 
             return imagePath;
         },
