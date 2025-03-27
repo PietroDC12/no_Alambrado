@@ -84,10 +84,12 @@ export default {
       return dataObj.toLocaleDateString("pt-BR");
     },
     getImageUrl(noticia) {
-            if (!noticia.image_url) return "/placeholder.jpg"; // Caso não tenha imagem, usa um placeholder
+      console.log("Imagem recebida:", noticia.image_url); // Adiciona log para depuração
 
-            return noticia.image_url;
-        },
+      if (!noticia.image_url) return "/placeholder.jpg"; // Se estiver vazio, mostra placeholder
+
+      return noticia.image_url; // Retorna a URL da imagem
+    },
     async registrarClique(noticiaId) {
       try {
         await axios.get(`https://no-alambrado.onrender.com/noticia/${noticiaId}/clique/`);

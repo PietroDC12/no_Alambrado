@@ -10,7 +10,8 @@
 
     <button @click="$router.push('/')">Voltar</button>
     <button v-if="authState.isAuthenticated.value" @click="excluirNoticia" class="btn btn-danger">Excluir</button>
-    <button v-if="authState.isAuthenticated.value" class="btn btn-edit"><router-link :to="'/noticias/' + noticia.id + '/editar'">Editar</router-link></button>
+    <button v-if="authState.isAuthenticated.value" class="btn btn-edit"><router-link
+        :to="'/noticias/' + noticia.id + '/editar'">Editar</router-link></button>
   </div>
 </template>
 
@@ -34,10 +35,12 @@ export default {
   },
   methods: {
     getImageUrl(noticia) {
-            if (!noticia.image_url) return "/placeholder.jpg"; // Caso não tenha imagem, usa um placeholder
+      console.log("Imagem recebida:", noticia.image_url); // Adiciona log para depuração
 
-            return noticia.image_url;
-        },
+      if (!noticia.image_url) return "/placeholder.jpg"; // Se estiver vazio, mostra placeholder
+
+      return noticia.image_url; // Retorna a URL da imagem
+    },
     formatDate(dateString) {
       const date = new Date(dateString);
       return date.toLocaleDateString('pt-BR');
