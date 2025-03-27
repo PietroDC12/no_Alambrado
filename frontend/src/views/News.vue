@@ -4,7 +4,7 @@
         <div class="grid">
             <div v-for="noticia in noticias" :key="noticia.id" class="card">
                 <p>{{ noticia.image_url }}</p> <!-- Para verificar se está vindo -->
-                <img v-if="noticia.image_url" :src="getImageUrl(noticia.image_url)" alt="Imagem da notícia" />
+                <img v-if="noticia.image_url" :src="noticia.image_url.replace('http:', 'https:')" alt="Imagem da notícia" />
                 <div class="content">
                     <h3>{{ noticia.tittle_news }}</h3>
                     <!--<p>{{ noticia.text_news.slice(0, 100) }}...</p>-->

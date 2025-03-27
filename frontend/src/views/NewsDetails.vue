@@ -4,7 +4,7 @@
     <h3>{{ noticia.subtittle_news }}</h3>
     <p class="author">Por: {{ noticia.author }} | {{ formatDate(noticia.date_news) }}</p>
 
-    <img v-if="noticia.image_url" :src="getImageUrl(noticia.image_url)" alt="Imagem da notícia" />
+    <img v-if="noticia.image_url" :src="noticia.image_url.replace('http:', 'https:')" alt="Imagem da notícia" />
 
     <p v-html="formattedText"></p>
 

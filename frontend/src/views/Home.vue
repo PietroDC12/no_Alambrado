@@ -10,7 +10,7 @@
 
         <div v-if="noticias.length">
           <div v-for="noticia in ultimasNoticias" :key="noticia.id" class="noticia-card">
-            <img v-if="noticia.image_url" :src="getImageUrl(noticia.image_url)" alt="Imagem da notícia" />
+            <img v-if="noticia.image_url" :src="noticia.image_url.replace('http:', 'https:')" alt="Imagem da notícia" />
             <h2>{{ noticia.tittle_news }}</h2>
             <!--<p>{{ noticia.subtittle_news }}</p>
             <p class="date">{{ formatarData(noticia.date_news) }}</p>-->
