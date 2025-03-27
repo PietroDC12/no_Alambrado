@@ -11,8 +11,8 @@
     <button @click="$router.push('/')">Voltar</button>
 
     <!-- Os botões só aparecem se `authState` existir e o usuário estiver autenticado -->
-    <button v-if="authState?.isAuthenticated?.value" @click="excluirNoticia" class="btn btn-danger">Excluir</button>
-    <button v-if="authState?.isAuthenticated?.value" class="btn btn-edit">
+    <button v-if="authState.isAuthenticated" @click="excluirNoticia" class="btn btn-danger">Excluir</button>
+    <button v-if="authState.isAuthenticated" class="btn btn-edit">
       <router-link :to="'/noticias/' + noticia.id + '/editar'">Editar</router-link>
     </button>
   </div>
