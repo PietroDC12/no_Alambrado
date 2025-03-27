@@ -24,9 +24,17 @@
 
 <script>
 import { getNoticiaById, deleteNoticia } from '../services/api';
-import { inject } from "vue"; // Importa `inject` para buscar o authState, se disponível
+import { inject } from 'vue';
 
 export default {
+  setup() {
+    const authState = inject("authState", null);
+
+    console.log("AuthState injetado:", authState);
+    console.log("AuthState.isAuthenticated:", authState?.isAuthenticated);
+
+    return { authState };
+  },
   data() {
     return {
       noticia: {},
@@ -41,15 +49,8 @@ export default {
       return this.noticia?.text_news ? this.noticia.text_news.replace(/\n/g, "<br>") : "";
     },
   },
-  setup() {
-  const authState = inject("authState", null);
-  console.log("authState:", authState); // Verifica se está sendo injetado corretamente
-  console.log("authState.isAuthenticated:", authState?.isAuthenticated?.value); // Verifica o estado da autenticação
-  return { authState };
-},
   methods: {
     formatDate(dateString) {
-      if (!dateString) return "Data não disponível";
       const date = new Date(dateString);
       return date.toLocaleDateString('pt-BR');
     },

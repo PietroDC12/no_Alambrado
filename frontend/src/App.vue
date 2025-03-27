@@ -11,8 +11,13 @@
 <script>
 import Navbar from "./components/Navbar.vue";
 import Footer from "./components/Footer.vue";
+import { authState } from "./main.js";
+import { provide } from "vue";
 
 export default {
+  setup() {
+    provide("authState", authState); // Agora authState será acessível nos componentes filhos
+  },
   components: {
     Navbar,
     Footer,
