@@ -20,8 +20,8 @@ import { getNoticias } from "../services/api";
 
 export default {
     mounted() {
-    document.title = 'Notícias'
-  },
+        document.title = 'Notícias'
+    },
     data() {
         return {
             noticias: [],
@@ -37,21 +37,25 @@ export default {
         getImageUrl(imagePath) {
             if (!imagePath) return "/placeholder.jpg"; // Caso não tenha imagem, usa um placeholder
 
-            // Corrige URLs relativas, garantindo o domínio correto
-            if (!imagePath.startsWith("http")) {
-                return `https://no-alambrado.onrender.com${imagePath}`;
+            // Se a imagem já é uma URL completa do Cloudinary
+            if (imagePath.includes("cloudinary.com")) {
+                return imagePath; // Já é uma URL válida do Cloudinary
             }
 
-            return imagePath;
+            // Se não for, tenta adicionar o domínio do Render para imagens relativas
+            return `https://no-alambrado.onrender.com${imagePath}`;
         },
-        async registrarClique(noticiaId) {
-            try {
-                await axios.get(`https://no-alambrado.onrender.com/noticia/${noticiaId}/clique/`);
-            } catch (error) {
-                console.error("Erro ao registrar clique:", error);
-            }
-        },
+
+
     },
+    async registrarClique(noticiaId) {
+        try {
+            await axios.get(`https://no-alambrado.onrender.com/noticia/${noticiaId}/clique/`);
+        } catch (error) {
+            console.error("Erro ao registrar clique:", error);
+        }
+    },
+},
 };
 </script>
 
